@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Identity Tools — JWT, SAML and Active Directory utilities</title>
+  <meta name="description" content="Free browser-based tools for identity and access management work: JWT decoder and verifier, SAML decoder, userAccountControl calculator and AD timestamp converter. Nothing you paste leaves your browser." />
+  <link rel="canonical" href="https://lcampassi.com/identity-tools/" />
+  <meta property="og:title" content="Identity Tools — Lucciano Campassi" />
+  <meta property="og:description" content="JWT, SAML and Active Directory utilities that run entirely in your browser." />
+  <meta property="og:url" content="https://lcampassi.com/identity-tools/" />
+<!-- @include: src/partials/head.html -->
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","@id":"https://lcampassi.com/identity-tools/#page","name":"Identity Tools","url":"https://lcampassi.com/identity-tools/","description":"Browser-based tools for identity and access management: JWT, SAML and Active Directory.","inLanguage":["en","es"],"author":{"@type":"Person","@id":"https://lcampassi.com/#person","name":"Lucciano Campassi","url":"https://lcampassi.com/"},"hasPart":[{"@type":"WebApplication","name":"JWT decoder & verifier","url":"https://lcampassi.com/identity-tools/jwt/","applicationCategory":"DeveloperApplication","operatingSystem":"Any","isAccessibleForFree":true},{"@type":"WebApplication","name":"SAML decoder","url":"https://lcampassi.com/identity-tools/saml/","applicationCategory":"DeveloperApplication","operatingSystem":"Any","isAccessibleForFree":true},{"@type":"WebApplication","name":"userAccountControl calculator","url":"https://lcampassi.com/identity-tools/uac/","applicationCategory":"DeveloperApplication","operatingSystem":"Any","isAccessibleForFree":true},{"@type":"WebApplication","name":"AD timestamp converter","url":"https://lcampassi.com/identity-tools/filetime/","applicationCategory":"DeveloperApplication","operatingSystem":"Any","isAccessibleForFree":true}]}</script>
+</head>
+<body>
+<!-- @include: src/partials/nav.html -->
+
+  <header class="page-header">
+    <div class="container">
+      <div class="eyebrow">Identity Tools</div>
+      <h1 data-i18n="h1">Tools for identity work</h1>
+      <p data-i18n="lead">Utilities I reach for when troubleshooting SSO, tokens and Active Directory. They run entirely in your browser: tokens, assertions and values you paste are never sent to a server.</p>
+      <div class="privacy-note"><i class="fas fa-lock"></i> <span data-i18n="csp">No backend, no analytics, network requests blocked by Content-Security-Policy</span></div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="tool-grid">
+        <a class="tool-card" href="/identity-tools/jwt/">
+          <span class="tool-icon"><i class="fas fa-key"></i></span>
+          <h2 data-i18n="jwt.h">JWT decoder &amp; verifier</h2>
+          <p data-i18n="jwt.p">Header, claims and validity window of an id_token or access token, with signature check against a secret, PEM, certificate or JWKS.</p>
+          <span class="tags"><span class="tag">OIDC</span><span class="tag">OAuth 2.0</span><span class="tag">Entra ID</span></span>
+        </a>
+        <a class="tool-card" href="/identity-tools/saml/">
+          <span class="tool-icon"><i class="fas fa-envelope-open-text"></i></span>
+          <h2 data-i18n="saml.h">SAML decoder</h2>
+          <p data-i18n="saml.p">SAMLRequest and SAMLResponse from the POST or Redirect binding: issuer, NameID, conditions, audience, attributes and signature algorithms.</p>
+          <span class="tags"><span class="tag">SAML 2.0</span><span class="tag">SSO</span></span>
+        </a>
+        <a class="tool-card" href="/identity-tools/uac/">
+          <span class="tool-icon"><i class="fas fa-sliders"></i></span>
+          <h2 data-i18n="uac.h">userAccountControl calculator</h2>
+          <p data-i18n="uac.p">Decode or build the flags of an AD account, see which ones are a security concern, and get the LDAP filter to find them.</p>
+          <span class="tags"><span class="tag">Active Directory</span><span class="tag">LDAP</span></span>
+        </a>
+        <a class="tool-card" href="/identity-tools/filetime/">
+          <span class="tool-icon"><i class="fas fa-clock-rotate-left"></i></span>
+          <h2 data-i18n="ft.h">AD timestamp converter</h2>
+          <p data-i18n="ft.p">FILETIME, Generalized Time and Unix epoch in both directions, AD intervals like maxPwdAge, and LDAP filters for stale accounts.</p>
+          <span class="tags"><span class="tag">Active Directory</span><span class="tag">LDAP</span></span>
+        </a>
+      </div>
+
+      <section class="about">
+        <h2 data-i18n="about.h">About</h2>
+        <p data-i18n-html="about.1">I'm Lucciano Campassi, an identity management and governance consultant. More about my work on <a href="/" data-href-es="/es/"><strong>my site</strong></a>, and the source of these tools is on <a href="https://github.com/D4rkDr4gon/identity-tools" rel="noopener"><strong>GitHub</strong></a>.</p>
+      </section>
+    </div>
+  </main>
+
+<!-- @include: src/partials/footer.html -->
+  <script type="module" src="/src/scripts/index.js"></script>
+</body>
+</html>

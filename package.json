@@ -1,0 +1,15 @@
+{
+  "name": "identity-tools",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Client-side identity tools (JWT, SAML, Active Directory) served at lcampassi.com/identity-tools/",
+  "scripts": {
+    "dev": "vite --port 8081",
+    "build": "vite build",
+    "preview": "vite preview --port 8081"
+  },
+  "devDependencies": {
+    "vite": "^6.3.0"
+  }
+}

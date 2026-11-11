@@ -1,0 +1,106 @@
+/* ══════════════════════════════════════════════
+   Design Tokens — shared by the landing and the blog
+   Light theme by default, dark via [data-theme="dark"]
+   or the OS preference (unless the user picked light).
+   ══════════════════════════════════════════════ */
+:root {
+  color-scheme: light;
+
+  /* Brand */
+  --red:             #e0193a;
+  --red-dim:         #c01231;
+  --red-dark:        #f3b7c2;
+  --red-glow:        rgba(224, 25, 58, 0.07);
+  --red-glow-strong: rgba(224, 25, 58, 0.14);
+  --border-red:      #f5cdd5;
+  --on-red:          #ffffff;
+
+  /* Surfaces */
+  --bg:              #f7f7f8;
+  --surface:         #ffffff;
+  --surface-2:       #f1f1f3;
+  --bg-card:         var(--surface);
+  --bg-hover:        var(--surface-2);
+  --nav-bg:          rgba(247, 247, 248, 0.85);
+
+  /* Borders */
+  --border:          #e4e4e8;
+  --border-2:        #d2d2d8;
+
+  /* Text */
+  --heading:         #111114;
+  --text:            #2a2a31;
+  --text-dim:        #55555f;
+  --text-muted:      #7a7a85;
+
+  /* Effects */
+  --shadow:          0 1px 2px rgba(17, 17, 20, 0.04), 0 8px 24px -12px rgba(17, 17, 20, 0.12);
+  --shadow-lg:       0 24px 60px -28px rgba(17, 17, 20, 0.28);
+  --grid-line:       rgba(17, 17, 20, 0.05);
+  --photo-bg:        #f1f1f3;
+  --mark-bg:         #15171c;
+  --mark-border:     transparent;
+
+  /* Shape */
+  --radius:          12px;
+  --radius-sm:       8px;
+  --nav-height:      4.25rem;
+
+  /* Fonts */
+  --font-sans:       'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono:       'JetBrains Mono', 'Fira Code', monospace;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --red:             #ff3b58;
+  --red-dim:         #ff2244;
+  --red-dark:        #6e1a29;
+  --red-glow:        rgba(255, 59, 88, 0.09);
+  --red-glow-strong: rgba(255, 59, 88, 0.18);
+  --border-red:      #4a1d26;
+  --bg:              #111317;
+  --surface:         #181b21;
+  --surface-2:       #1f232a;
+  --nav-bg:          rgba(17, 19, 23, 0.85);
+  --border:          #272b33;
+  --border-2:        #363b45;
+  --heading:         #f4f5f7;
+  --text:            #dcdfe5;
+  --text-dim:        #a4aab5;
+  --text-muted:      #7f8693;
+  --shadow:          0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -12px rgba(0, 0, 0, 0.5);
+  --shadow-lg:       0 24px 60px -28px rgba(0, 0, 0, 0.7);
+  --grid-line:       rgba(255, 255, 255, 0.045);
+  --photo-bg:        #1f232a;
+  --mark-bg:         #15171c;
+  --mark-border:     #363b45;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --red:             #ff3b58;
+    --red-dim:         #ff2244;
+    --red-dark:        #6e1a29;
+    --red-glow:        rgba(255, 59, 88, 0.09);
+    --red-glow-strong: rgba(255, 59, 88, 0.18);
+    --border-red:      #4a1d26;
+    --bg:              #111317;
+    --surface:         #181b21;
+    --surface-2:       #1f232a;
+    --nav-bg:          rgba(17, 19, 23, 0.85);
+    --border:          #272b33;
+    --border-2:        #363b45;
+    --heading:         #f4f5f7;
+    --text:            #dcdfe5;
+    --text-dim:        #a4aab5;
+    --text-muted:      #7f8693;
+    --shadow:          0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -12px rgba(0, 0, 0, 0.5);
+    --shadow-lg:       0 24px 60px -28px rgba(0, 0, 0, 0.7);
+    --grid-line:       rgba(255, 255, 255, 0.045);
+    --photo-bg:        #1f232a;
+    --mark-bg:         #15171c;
+    --mark-border:     #363b45;
+  }
+}

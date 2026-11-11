@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AD Timestamp Converter (FILETIME, LDAP) — Identity Tools</title>
+  <meta name="description" content="Convert Active Directory timestamps: lastLogonTimestamp, pwdLastSet and accountExpires (Windows FILETIME), whenCreated (Generalized Time), Unix epoch and AD intervals like maxPwdAge. Build LDAP filters for stale accounts." />
+  <link rel="canonical" href="https://lcampassi.com/identity-tools/filetime/" />
+  <meta property="og:title" content="AD Timestamp Converter — Identity Tools" />
+  <meta property="og:description" content="Convert FILETIME, LDAP Generalized Time and Unix epoch; build stale-account LDAP filters." />
+  <meta property="og:url" content="https://lcampassi.com/identity-tools/filetime/" />
+<!-- @include: src/partials/head.html -->
+</head>
+<body>
+<!-- @include: src/partials/nav.html -->
+
+  <header class="page-header">
+    <div class="container">
+      <div class="eyebrow"><a href="/identity-tools/" data-i18n="common.tools">Tools</a></div>
+      <h1 data-i18n="h1">AD timestamp converter</h1>
+      <p data-i18n="lead">Turn the numbers Active Directory stores in lastLogonTimestamp, pwdLastSet, accountExpires or whenCreated into dates, and dates back into values you can drop into an LDAP filter.</p>
+      <div class="privacy-note"><i class="fas fa-lock"></i> <span data-i18n="common.privacy">Processed locally, in your browser</span></div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container tool-layout">
+      <section class="panel">
+        <div class="panel-title">
+          <span data-i18n="conv.title">Convert</span>
+          <span class="panel-actions">
+            <button class="btn" type="button" id="now"><i class="fas fa-clock"></i> <span data-i18n="now">Now</span></button>
+          </span>
+        </div>
+        <label for="ts" data-i18n="ts.label">Value</label>
+        <input type="text" id="ts" autocomplete="off" spellcheck="false" placeholder="133758912000000000" />
+        <p class="hint" data-i18n="ts.hint">FILETIME (18 digits), Generalized Time (20261111140000.0Z), Unix seconds or milliseconds, ISO 8601, or a negative AD interval such as maxPwdAge.</p>
+        <div id="convOut" aria-live="polite"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-title"><span data-i18n="stale.title">Stale accounts filter</span></div>
+        <div class="field">
+          <label for="days" data-i18n="days.label">Inactive for more than (days)</label>
+          <input type="number" id="days" min="1" max="36500" value="90" />
+        </div>
+        <div class="field">
+          <label for="kind" data-i18n="kind.label">Objects</label>
+          <select id="kind">
+            <option value="user" data-i18n="kind.user">Users</option>
+            <option value="computer" data-i18n="kind.computer">Computers</option>
+          </select>
+        </div>
+        <label class="flag" for="enabledOnly">
+          <input type="checkbox" id="enabledOnly" checked />
+          <span><span class="flag-name" data-i18n="enabledOnly">Only enabled accounts</span></span>
+        </label>
+        <div id="staleOut"></div>
+      </section>
+    </div>
+
+    <div class="container">
+      <section class="about">
+        <h2 data-i18n="about.h">Good to know</h2>
+        <ul>
+          <li data-i18n-html="about.1">FILETIME counts 100-nanosecond intervals since 1601-01-01 UTC. <code>0</code> and <code>9223372036854775807</code> are special: in <code>accountExpires</code> both mean "never".</li>
+          <li data-i18n-html="about.2"><code>lastLogonTimestamp</code> is replicated, but only updated when it is older than <code>ms-DS-Logon-Time-Sync-Interval</code> (14 days by default minus a random 5). It is the right attribute for stale-account reports, not for "last logon today".</li>
+          <li data-i18n-html="about.3"><code>lastLogon</code> is per domain controller and not replicated: to get the real value you have to query every DC.</li>
+          <li data-i18n-html="about.4"><code>pwdLastSet = 0</code> means the user must change the password at next logon.</li>
+        </ul>
+      </section>
+    </div>
+  </main>
+
+<!-- @include: src/partials/footer.html -->
+  <script type="module" src="/src/scripts/filetime.js"></script>
+</body>
+</html>

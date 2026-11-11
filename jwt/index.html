@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JWT Decoder &amp; Verifier — Identity Tools</title>
+  <meta name="description" content="Decode and verify JSON Web Tokens (OIDC id_token, OAuth access tokens, Entra ID) in your browser: header, claims, expiry and signature check with a secret, PEM, certificate or JWKS. Nothing is sent to a server." />
+  <link rel="canonical" href="https://lcampassi.com/identity-tools/jwt/" />
+  <meta property="og:title" content="JWT Decoder &amp; Verifier — Identity Tools" />
+  <meta property="og:description" content="Decode and verify JWTs locally: claims, expiry, and signature with a secret, PEM, certificate or JWKS." />
+  <meta property="og:url" content="https://lcampassi.com/identity-tools/jwt/" />
+<!-- @include: src/partials/head.html -->
+</head>
+<body>
+<!-- @include: src/partials/nav.html -->
+
+  <header class="page-header">
+    <div class="container">
+      <div class="eyebrow"><a href="/identity-tools/" data-i18n="common.tools">Tools</a></div>
+      <h1 data-i18n="h1">JWT decoder &amp; verifier</h1>
+      <p data-i18n="lead">Paste an id_token or access token to see its header, claims and validity window, and check the signature with a shared secret, a public key, a certificate or the issuer's JWKS.</p>
+      <div class="privacy-note"><i class="fas fa-lock"></i> <span data-i18n="common.privacy">Processed locally, in your browser</span></div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container tool-layout">
+      <div>
+        <section class="panel">
+          <div class="panel-title">
+            <span data-i18n="common.input">Input</span>
+            <span class="panel-actions">
+              <button class="btn" type="button" id="sample"><i class="fas fa-flask"></i> <span data-i18n="common.sample">Sample</span></button>
+              <button class="btn" type="button" id="clear"><i class="fas fa-xmark"></i> <span data-i18n="common.clear">Clear</span></button>
+            </span>
+          </div>
+          <label for="token" data-i18n="token.label">Token</label>
+          <textarea id="token" spellcheck="false" autocomplete="off" placeholder="eyJhbGciOi..." data-i18n-ph="token.ph"></textarea>
+          <p class="hint" data-i18n="token.hint">A leading "Bearer " or an Authorization header line is stripped automatically.</p>
+        </section>
+
+        <section class="panel">
+          <div class="panel-title"><span data-i18n="verify.title">Verify signature</span></div>
+          <label for="key" data-i18n="key.label">Secret, public key, certificate or JWKS</label>
+          <textarea id="key" spellcheck="false" autocomplete="off" placeholder="-----BEGIN PUBLIC KEY-----&#10;…" data-i18n-ph="key.ph"></textarea>
+          <label class="flag" for="secretB64">
+            <input type="checkbox" id="secretB64" />
+            <span><span class="flag-name" data-i18n="key.b64">HMAC secret is base64 / base64url encoded</span></span>
+          </label>
+          <div class="btn-row">
+            <button class="btn btn-primary" type="button" id="verify"><i class="fas fa-shield-halved"></i> <span data-i18n="verify.btn">Verify</span></button>
+          </div>
+          <div id="verifyOut" class="btn-row" aria-live="polite"></div>
+          <p class="hint" data-i18n="key.hint">Accepted: HMAC secret (HS*), PEM public key (SPKI), PEM certificate, a single JWK or a JWKS (picked by kid). Supports HS, RS, PS, ES and EdDSA.</p>
+        </section>
+      </div>
+
+      <section class="panel" id="out" aria-live="polite">
+        <div class="panel-title"><span data-i18n="common.result">Result</span></div>
+        <div id="result"><p class="empty" data-i18n="empty">Paste a token to decode it.</p></div>
+      </section>
+    </div>
+
+    <div class="container">
+      <section class="about">
+        <h2 data-i18n="about.h">What it checks</h2>
+        <ul>
+          <li data-i18n-html="about.1">Decodes header and payload (base64url) and converts <code>exp</code>, <code>nbf</code>, <code>iat</code> and <code>auth_time</code> to readable dates.</li>
+          <li data-i18n-html="about.2">Flags common problems: <code>alg: none</code>, missing <code>exp</code>, symmetric algorithms, long lifetimes, tokens that are expired or not yet valid.</li>
+          <li data-i18n-html="about.3">Recognises Entra ID tokens (v1/v2 issuer, <code>tid</code>, <code>oid</code>, Microsoft Graph audience) and explains the usual surprises.</li>
+          <li data-i18n="about.4">Verifies the signature with the Web Crypto API. Encrypted tokens (JWE) can only show their header.</li>
+        </ul>
+      </section>
+    </div>
+  </main>
+
+<!-- @include: src/partials/footer.html -->
+  <script type="module" src="/src/scripts/jwt.js"></script>
+</body>
+</html>

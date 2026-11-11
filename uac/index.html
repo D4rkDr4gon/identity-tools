@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>userAccountControl Calculator — Identity Tools</title>
+  <meta name="description" content="Decode and build Active Directory userAccountControl values (512, 514, 66048…): every flag explained, security-relevant bits highlighted, and the matching LDAP filter and PowerShell query." />
+  <link rel="canonical" href="https://lcampassi.com/identity-tools/uac/" />
+  <meta property="og:title" content="userAccountControl Calculator — Identity Tools" />
+  <meta property="og:description" content="Decode and build AD userAccountControl values, with LDAP filters and PowerShell queries." />
+  <meta property="og:url" content="https://lcampassi.com/identity-tools/uac/" />
+<!-- @include: src/partials/head.html -->
+</head>
+<body>
+<!-- @include: src/partials/nav.html -->
+
+  <header class="page-header">
+    <div class="container">
+      <div class="eyebrow"><a href="/identity-tools/" data-i18n="common.tools">Tools</a></div>
+      <h1 data-i18n="h1">userAccountControl calculator</h1>
+      <p data-i18n="lead">Type a value to see which flags it carries, or tick flags to build one. The tool also gives you the LDAP filter and PowerShell query to find accounts with those bits set.</p>
+      <div class="privacy-note"><i class="fas fa-lock"></i> <span data-i18n="common.privacy">Processed locally, in your browser</span></div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <section class="panel">
+        <div class="panel-title"><span data-i18n="value.title">Value</span></div>
+        <div class="tool-layout">
+          <div>
+            <label for="value" data-i18n="value.label">userAccountControl (decimal or 0x hex)</label>
+            <input type="text" id="value" inputmode="numeric" autocomplete="off" spellcheck="false" value="512" />
+            <div class="presets" id="presets"></div>
+          </div>
+          <div>
+            <div class="big-value" id="big"></div>
+            <ul class="notes" id="notes"></ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-title"><span data-i18n="flags.title">Flags</span></div>
+        <div class="flag-list" id="flags"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-title"><span data-i18n="query.title">Find accounts with these flags</span></div>
+        <div id="query"></div>
+      </section>
+
+      <section class="about">
+        <h2 data-i18n="about.h">Good to know</h2>
+        <ul>
+          <li data-i18n-html="about.1"><code>LOCKOUT</code> and <code>PASSWORD_EXPIRED</code> are not kept up to date in <code>userAccountControl</code>. Read <code>msDS-User-Account-Control-Computed</code> or <code>lockoutTime</code> / <code>pwdLastSet</code> instead.</li>
+          <li data-i18n-html="about.2"><code>PASSWD_CANT_CHANGE</code> is enforced by an ACE on the object, not by this bit: setting it alone does nothing.</li>
+          <li data-i18n-html="about.3">The OID <code>1.2.840.113556.1.4.803</code> is the bitwise AND matching rule (all bits must be set); <code>1.2.840.113556.1.4.804</code> is bitwise OR (any bit).</li>
+        </ul>
+      </section>
+    </div>
+  </main>
+
+<!-- @include: src/partials/footer.html -->
+  <script type="module" src="/src/scripts/uac.js"></script>
+</body>
+</html>

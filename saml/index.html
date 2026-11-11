@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SAML Decoder — Identity Tools</title>
+  <meta name="description" content="Decode SAML requests and responses from the HTTP-POST or HTTP-Redirect binding (base64, deflate, URL-encoded) in your browser. Shows issuer, NameID, conditions, audience, attributes and signature algorithms." />
+  <link rel="canonical" href="https://lcampassi.com/identity-tools/saml/" />
+  <meta property="og:title" content="SAML Decoder — Identity Tools" />
+  <meta property="og:description" content="Decode SAMLRequest / SAMLResponse locally and read the assertion: issuer, NameID, conditions, attributes, signatures." />
+  <meta property="og:url" content="https://lcampassi.com/identity-tools/saml/" />
+<!-- @include: src/partials/head.html -->
+</head>
+<body>
+<!-- @include: src/partials/nav.html -->
+
+  <header class="page-header">
+    <div class="container">
+      <div class="eyebrow"><a href="/identity-tools/" data-i18n="common.tools">Tools</a></div>
+      <h1 data-i18n="h1">SAML decoder</h1>
+      <p data-i18n="lead">Paste a SAMLRequest or SAMLResponse as it travels on the wire (POST or Redirect binding, or the whole URL) and read what the IdP and the SP are actually saying.</p>
+      <div class="privacy-note"><i class="fas fa-lock"></i> <span data-i18n="common.privacy">Processed locally, in your browser</span></div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container tool-layout">
+      <div>
+        <section class="panel">
+          <div class="panel-title">
+            <span data-i18n="common.input">Input</span>
+            <span class="panel-actions">
+              <button class="btn" type="button" id="sample"><i class="fas fa-flask"></i> <span data-i18n="common.sample">Sample</span></button>
+              <button class="btn" type="button" id="clear"><i class="fas fa-xmark"></i> <span data-i18n="common.clear">Clear</span></button>
+            </span>
+          </div>
+          <label for="input" data-i18n="in.label">SAML message</label>
+          <textarea id="input" spellcheck="false" autocomplete="off" placeholder="PHNhbWxwOlJlc3BvbnNl…  /  https://idp/sso?SAMLRequest=…  /  &lt;samlp:Response …&gt;" data-i18n-ph="in.ph"></textarea>
+          <p class="hint" data-i18n="in.hint">Accepts base64 (POST binding), base64 + deflate (Redirect binding), URL-encoded values, a full URL or form body with SAMLRequest / SAMLResponse, or plain XML.</p>
+          <div class="btn-row">
+            <button class="btn" type="button" id="encPost"><i class="fas fa-arrow-right-to-bracket"></i> <span data-i18n="enc.post">Encode XML for POST</span></button>
+            <button class="btn" type="button" id="encRedirect"><i class="fas fa-link"></i> <span data-i18n="enc.redirect">Encode XML for Redirect</span></button>
+          </div>
+          <div id="encOut"></div>
+        </section>
+      </div>
+
+      <section class="panel" aria-live="polite">
+        <div class="panel-title"><span data-i18n="common.result">Result</span></div>
+        <div id="result"><p class="empty" data-i18n="empty">Paste a SAML message to decode it.</p></div>
+      </section>
+    </div>
+
+    <div class="container">
+      <section class="about">
+        <h2 data-i18n="about.h">Notes</h2>
+        <ul>
+          <li data-i18n-html="about.1">The HTTP-Redirect binding compresses the message with raw DEFLATE before base64 and URL-encoding; the HTTP-POST binding only base64-encodes it. The decoder detects which one it got.</li>
+          <li data-i18n-html="about.2">Signatures are reported (where they are and which algorithms they use) but not cryptographically validated: that requires XML canonicalisation and the IdP certificate, and belongs in the SP.</li>
+          <li data-i18n-html="about.3">An <code>EncryptedAssertion</code> can only be read with the SP private key, which should never be pasted into a web page.</li>
+        </ul>
+      </section>
+    </div>
+  </main>
+
+<!-- @include: src/partials/footer.html -->
+  <script type="module" src="/src/scripts/saml.js"></script>
+</body>
+</html>
