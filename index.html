@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Identity Tools — JWT, SAML and Active Directory utilities</title>
-  <meta name="description" content="Free browser-based tools for identity and access management work: JWT decoder and verifier, SAML decoder, userAccountControl calculator and AD timestamp converter. Nothing you paste leaves your browser." />
+  <meta name="description" content="Free browser-based tools for identity and access management work: JWT decoder and verifier, SAML decoder, SAML metadata inspector, LDAP filter validator, userAccountControl calculator and AD timestamp converter. Nothing you paste leaves your browser." />
   <link rel="canonical" href="https://lcampassi.com/identity-tools/" />
   <meta property="og:title" content="Identity Tools — Lucciano Campassi" />
   <meta property="og:description" content="JWT, SAML and Active Directory utilities that run entirely in your browser." />
   <meta property="og:url" content="https://lcampassi.com/identity-tools/" />
 <!-- @include: src/partials/head.html -->
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","@id":"https://lcampassi.com/identity-tools/#page","name":"Identity Tools","url":"https://lcampassi.com/identity-tools/","description":"Browser-based tools for identity and access management: JWT, SAML and Active Directory.","inLanguage":["en","es"],"author":{"@type":"Person","@id":"https://lcampassi.com/#person","name":"Lucciano Campassi","url":"https://lcampassi.com/"},"hasPart":[{"@type":"WebApplication","name":"JWT decoder & verifier","url":"https://lcampassi.com/identity-tools/jwt/","applicationCategory":"DeveloperApplication","operatingSystem":"Any","isAccessibleForFree":true},{"@type":"WebApplication","name":"SAML decoder","url":"https://lcampassi.com/identity-tools/saml/","applicationCategory":"DeveloperApplication","operatingSystem":"Any","isAccessibleForFree":true},{"@type":"WebApplication","name":"userAccountControl calculator","url":"https://lcampassi.com/identity-tools/uac/","applicationCategory":"DeveloperApplication","operatingSystem":"Any","isAccessibleForFree":true},{"@type":"WebApplication","name":"AD timestamp converter","url":"https://lcampassi.com/identity-tools/filetime/","applicationCategory":"DeveloperApplication","operatingSystem":"Any","isAccessibleForFree":true}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","@id":"https://lcampassi.com/identity-tools/#page","name":"Identity Tools","url":"https://lcampassi.com/identity-tools/","description":"Browser-based tools for identity and access management: JWT, SAML and Active Directory.","inLanguage":["en","es"],"author":{"@type":"Person","@id":"https://lcampassi.com/#person","name":"Lucciano Campassi","url":"https://lcampassi.com/"},"hasPart":[{"@type":"WebApplication","name":"JWT decoder & verifier","url":"https://lcampassi.com/identity-tools/jwt/","applicationCategory":"DeveloperApplication","operatingSystem":"Any","isAccessibleForFree":true},{"@type":"WebApplication","name":"SAML decoder","url":"https://lcampassi.com/identity-tools/saml/","applicationCategory":"DeveloperApplication","operatingSystem":"Any","isAccessibleForFree":true},{"@type":"WebApplication","name":"SAML metadata inspector","url":"https://lcampassi.com/identity-tools/saml-metadata/","applicationCategory":"DeveloperApplication","operatingSystem":"Any","isAccessibleForFree":true},{"@type":"WebApplication","name":"LDAP filter validator & formatter","url":"https://lcampassi.com/identity-tools/ldap/","applicationCategory":"DeveloperApplication","operatingSystem":"Any","isAccessibleForFree":true},{"@type":"WebApplication","name":"userAccountControl calculator","url":"https://lcampassi.com/identity-tools/uac/","applicationCategory":"DeveloperApplication","operatingSystem":"Any","isAccessibleForFree":true},{"@type":"WebApplication","name":"AD timestamp converter","url":"https://lcampassi.com/identity-tools/filetime/","applicationCategory":"DeveloperApplication","operatingSystem":"Any","isAccessibleForFree":true}]}</script>
 </head>
 <body>
 <!-- @include: src/partials/nav.html -->
@@ -38,6 +38,18 @@
           <h2 data-i18n="saml.h">SAML decoder</h2>
           <p data-i18n="saml.p">SAMLRequest and SAMLResponse from the POST or Redirect binding: issuer, NameID, conditions, audience, attributes and signature algorithms.</p>
           <span class="tags"><span class="tag">SAML 2.0</span><span class="tag">SSO</span></span>
+        </a>
+        <a class="tool-card" href="/identity-tools/saml-metadata/">
+          <span class="tool-icon"><i class="fas fa-file-shield"></i></span>
+          <h2 data-i18n="md.h">SAML metadata inspector</h2>
+          <p data-i18n="md.p">Endpoints by binding, NameID formats, attributes and certificates of an IdP or SP, with SHA-1 / SHA-256 thumbprints and expiry.</p>
+          <span class="tags"><span class="tag">SAML 2.0</span><span class="tag">X.509</span></span>
+        </a>
+        <a class="tool-card" href="/identity-tools/ldap/">
+          <span class="tool-icon"><i class="fas fa-filter"></i></span>
+          <h2 data-i18n="ldap.h">LDAP filter validator &amp; formatter</h2>
+          <p data-i18n="ldap.p">Validate, indent and explain a search filter: bitwise and nested-group rules, AD flags, value escaping and SID / GUID to binary.</p>
+          <span class="tags"><span class="tag">LDAP</span><span class="tag">Active Directory</span></span>
         </a>
         <a class="tool-card" href="/identity-tools/uac/">
           <span class="tool-icon"><i class="fas fa-sliders"></i></span>

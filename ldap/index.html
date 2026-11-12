@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LDAP Filter Validator &amp; Formatter — Identity Tools</title>
+  <meta name="description" content="Validate, format and explain LDAP search filters (RFC 4515) for Active Directory: bitwise and IN_CHAIN matching rules, userAccountControl flags, value escaping, SID/GUID to binary, and ready-to-run PowerShell and ldapsearch queries." />
+  <link rel="canonical" href="https://lcampassi.com/identity-tools/ldap/" />
+  <meta property="og:title" content="LDAP Filter Validator &amp; Formatter — Identity Tools" />
+  <meta property="og:description" content="Validate, indent and explain LDAP filters for Active Directory, escape values and build PowerShell queries." />
+  <meta property="og:url" content="https://lcampassi.com/identity-tools/ldap/" />
+<!-- @include: src/partials/head.html -->
+</head>
+<body>
+<!-- @include: src/partials/nav.html -->
+
+  <header class="page-header">
+    <div class="container">
+      <div class="eyebrow"><a href="/identity-tools/" data-i18n="common.tools">Tools</a></div>
+      <h1 data-i18n="h1">LDAP filters</h1>
+      <p data-i18n="lead">Paste an LDAP filter to validate it against RFC 4515, see it indented and read in plain words what it searches for, with AD flags and matching rules explained. It also escapes values and builds the PowerShell query.</p>
+      <div class="privacy-note"><i class="fas fa-lock"></i> <span data-i18n="common.privacy">Processed locally, in your browser</span></div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container tool-layout">
+      <div>
+        <section class="panel">
+          <div class="panel-title">
+            <span data-i18n="in.title">Filter</span>
+            <span class="panel-actions">
+              <button class="btn" type="button" id="clear"><i class="fas fa-xmark"></i> <span data-i18n="common.clear">Clear</span></button>
+            </span>
+          </div>
+          <label for="input" data-i18n="in.label">LDAP filter</label>
+          <textarea id="input" class="short" spellcheck="false" autocomplete="off" placeholder="(&amp;(objectCategory=person)(objectClass=user)…)"></textarea>
+          <p class="hint" data-i18n="in.hint">On one line or indented; whitespace between components is ignored.</p>
+          <div class="field">
+            <label for="tpl" data-i18n="tpl.label">Templates</label>
+            <select id="tpl"></select>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-title"><span data-i18n="esc.title">Escape a value</span></div>
+          <label for="escIn" data-i18n="esc.label">Value to use inside a filter</label>
+          <input type="text" id="escIn" autocomplete="off" spellcheck="false" placeholder="Sales (EMEA) * 2026" data-i18n-ph="esc.ph" />
+          <label class="flag check" for="nonAscii">
+            <input type="checkbox" id="nonAscii" />
+            <span><span class="flag-name" data-i18n="esc.nonAscii">Also escape non-ASCII characters (as UTF-8 bytes)</span></span>
+          </label>
+          <p class="hint" data-i18n="esc.hint">Escapes * ( ) \ and NUL per RFC 4515. Paste a SID (S-1-5-21-…) or a GUID to also get its binary form for objectSid / objectGUID searches.</p>
+          <div id="escOut" aria-live="polite"></div>
+        </section>
+      </div>
+
+      <section class="panel" aria-live="polite">
+        <div class="panel-title"><span data-i18n="common.result">Result</span></div>
+        <div id="result"><p class="empty" data-i18n="empty">Paste an LDAP filter to analyse it.</p></div>
+      </section>
+    </div>
+
+    <div class="container">
+      <section class="about">
+        <h2 data-i18n="about.h">Good to know</h2>
+        <ul>
+          <li data-i18n-html="about.1"><code>memberOf</code> only lists direct membership. To include nested groups use the <code>1.2.840.113556.1.4.1941</code> rule (<code>LDAP_MATCHING_RULE_IN_CHAIN</code>), which is exact but can be expensive on large hierarchies.</li>
+          <li data-i18n-html="about.2">In AD, <code>computer</code> inherits from <code>user</code>: <code>(objectClass=user)</code> also returns computers. For people, combine it with <code>(objectCategory=person)</code>.</li>
+          <li data-i18n-html="about.3">A leading wildcard (<code>cn=*sales</code>) cannot use the attribute index and forces a walk through every object in scope.</li>
+          <li data-i18n-html="about.4"><code>(!(attribute=value))</code> also returns objects that do not have that attribute. If that is not what you want, add <code>(attribute=*)</code>.</li>
+        </ul>
+      </section>
+    </div>
+  </main>
+
+<!-- @include: src/partials/footer.html -->
+  <script type="module" src="/src/scripts/ldap.js"></script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SAML Metadata Inspector — Identity Tools</title>
+  <meta name="description" content="Inspect SAML 2.0 IdP and SP metadata in your browser: entityID, SSO, SLO and ACS endpoints by binding, NameID formats, attributes, and signing and encryption certificates with SHA-1 / SHA-256 thumbprints and expiry." />
+  <link rel="canonical" href="https://lcampassi.com/identity-tools/saml-metadata/" />
+  <meta property="og:title" content="SAML Metadata Inspector — Identity Tools" />
+  <meta property="og:description" content="Read IdP and SP metadata: endpoints, NameID formats, attributes and certificates with thumbprints and expiry." />
+  <meta property="og:url" content="https://lcampassi.com/identity-tools/saml-metadata/" />
+<!-- @include: src/partials/head.html -->
+</head>
+<body>
+<!-- @include: src/partials/nav.html -->
+
+  <header class="page-header">
+    <div class="container">
+      <div class="eyebrow"><a href="/identity-tools/" data-i18n="common.tools">Tools</a></div>
+      <h1 data-i18n="h1">SAML metadata inspector</h1>
+      <p data-i18n="lead">Paste the metadata of an IdP or an SP and review its entityID, endpoints by binding, NameID formats, attributes and certificates, with their thumbprints and expiry.</p>
+      <div class="privacy-note"><i class="fas fa-lock"></i> <span data-i18n="common.privacy">Processed locally, in your browser</span></div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container tool-layout">
+      <div>
+        <section class="panel">
+          <div class="panel-title">
+            <span data-i18n="common.input">Input</span>
+            <span class="panel-actions">
+              <button class="btn" type="button" id="sampleIdp"><i class="fas fa-flask"></i> <span data-i18n="sample.idp">Sample IdP</span></button>
+              <button class="btn" type="button" id="sampleSp"><i class="fas fa-flask"></i> <span data-i18n="sample.sp">Sample SP</span></button>
+              <button class="btn" type="button" id="clear"><i class="fas fa-xmark"></i> <span data-i18n="common.clear">Clear</span></button>
+            </span>
+          </div>
+          <label for="input" data-i18n="in.label">Metadata XML</label>
+          <textarea id="input" spellcheck="false" autocomplete="off" placeholder="&lt;md:EntityDescriptor entityID=&quot;…&quot;&gt;"></textarea>
+          <p class="hint" data-i18n="in.hint">EntityDescriptor or EntitiesDescriptor (federations), as XML or base64. This page cannot download metadata from a URL: open it in another tab and paste the XML.</p>
+          <div class="field" id="entityWrap" hidden>
+            <label for="entity"><span data-i18n="entity.label">Entity</span> (<span id="entityCount"></span>)</label>
+            <select id="entity"></select>
+          </div>
+        </section>
+      </div>
+
+      <section class="panel" aria-live="polite">
+        <div class="panel-title"><span data-i18n="common.result">Result</span></div>
+        <div id="result"><p class="empty" data-i18n="empty">Paste SAML metadata to inspect it.</p></div>
+      </section>
+    </div>
+
+    <div class="container">
+      <section class="about">
+        <h2 data-i18n="about.h">Notes</h2>
+        <ul>
+          <li data-i18n-html="about.1">The SHA-1 and SHA-256 thumbprints are what most consoles (ADFS, Entra ID, One Identity, Okta) ask for when you set up a trust, and what you compare over another channel to confirm the certificate is the right one.</li>
+          <li data-i18n-html="about.2">In SAML the metadata certificate is only a container for the public key: its issuer and signature algorithm do not matter, but its expiry does, because many SPs stop accepting signatures from an expired certificate.</li>
+          <li data-i18n-html="about.3">For a certificate rollover without downtime, the IdP publishes the new certificate next to the current one (two <code>KeyDescriptor use="signing"</code>), the SPs refresh the metadata, and only then does the IdP start signing with the new one.</li>
+          <li data-i18n-html="about.4">The metadata signature is reported, not validated. For a specific SAML message use the <a href="/identity-tools/saml/"><strong>SAML decoder</strong></a>.</li>
+        </ul>
+      </section>
+    </div>
+  </main>
+
+<!-- @include: src/partials/footer.html -->
+  <script type="module" src="/src/scripts/saml-metadata.js"></script>
+</body>
+</html>

@@ -112,3 +112,51 @@ export function onInput(el, fn, ms = 150) {
     t = setTimeout(fn, ms);
   });
 }
+
+// ── Notes and tabs (shared result widgets) ───────────────
+
+export const ICON = { bad: 'fa-circle-xmark', warn: 'fa-triangle-exclamation', info: 'fa-circle-info', ok: 'fa-circle-check' };
+
+/** notes: [{ level, text } | { level, html }] → <ul class="notes"> */
+export function notesHtml(notes) {
+  return `<ul class="notes">${notes
+    .map((n) => `<li class="${n.level}"><i class="fas ${ICON[n.level]}"></i><span>${n.html ?? esc(n.text)}</span></li>`)
+    .join('')}</ul>`;
+}
+
+/**
+ * Tabbed panels inside `container`. Returns a render function that takes
+ * [{ id, label, html }] and remembers the selected tab across re-renders.
+ */
+export function tabs(container) {
+  let active = null;
+  container.addEventListener('click', (e) => {
+    const tab = e.target.closest('.tab');
+    if (!tab || !container.contains(tab)) return;
+    active = tab.dataset.tab;
+    container.querySelectorAll('.tab').forEach((t) => t.setAttribute('aria-selected', String(t === tab)));
+    container.querySelectorAll('.tab-panel').forEach((p) => (p.hidden = p.dataset.panel !== active));
+  });
+  return (list) => {
+    if (!list.some((t) => t.id === active)) active = list[0].id;
+    const head = list
+      .map((t) => `<button class="tab" role="tab" type="button" data-tab="${t.id}" aria-selected="${t.id === active}">${esc(t.label)}</button>`)
+      .join('');
+    const body = list
+      .map((t) => `<div class="tab-panel" role="tabpanel" data-panel="${t.id}"${t.id === active ? '' : ' hidden'}>${t.html}</div>`)
+      .join('');
+    return `<div class="tabs" role="tablist">${head}</div>${body}`;
+  };
+}
+
+export function copyBtn(target, en = 'Copy', es = 'Copiar') {
+  return `<button class="btn" type="button" data-copy="${target}"><i class="fas fa-copy"></i> <span>${tr(en, es)}</span></button>`;
+}
+
+export function bytesToB64(bytes) {
+  let bin = '';
+  for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+  return btoa(bin);
+}
+
+export const toHex = (bytes, sep = '') => [...bytes].map((b) => b.toString(16).padStart(2, '0').toUpperCase()).join(sep);

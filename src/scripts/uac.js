@@ -1,5 +1,6 @@
 import { initPage, esc } from './common.js';
 import { tr } from './i18n.js';
+import { UAC_FLAGS } from './ad-flags.js';
 
 initPage({
   _title: 'Calculadora de userAccountControl — Identity Tools',
@@ -13,33 +14,10 @@ initPage({
   'about.1': '<code>LOCKOUT</code> y <code>PASSWORD_EXPIRED</code> no se mantienen actualizados en <code>userAccountControl</code>. Consultá <code>msDS-User-Account-Control-Computed</code> o <code>lockoutTime</code> / <code>pwdLastSet</code>.',
   'about.2': '<code>PASSWD_CANT_CHANGE</code> se aplica con un ACE sobre el objeto, no con este bit: marcarlo solo no hace nada.',
   'about.3': 'El OID <code>1.2.840.113556.1.4.803</code> es la regla de coincidencia AND a nivel de bits (deben estar todos); <code>1.2.840.113556.1.4.804</code> es OR (alcanza con uno).',
+  'about.4': 'Para leer, validar o formatear un filtro completo, usá la <a href="/identity-tools/ldap/"><strong>herramienta de filtros LDAP</strong></a>.',
 });
 
-// [bit, name, en, es, risk] — risk: 'bad' | 'warn' | undefined
-const FLAGS = [
-  [0x1, 'SCRIPT', 'Logon script runs', 'Se ejecuta el script de inicio de sesión'],
-  [0x2, 'ACCOUNTDISABLE', 'Account disabled', 'Cuenta deshabilitada'],
-  [0x8, 'HOMEDIR_REQUIRED', 'Home folder required', 'Requiere carpeta personal'],
-  [0x10, 'LOCKOUT', 'Locked out (not reliable here)', 'Bloqueada (no confiable acá)'],
-  [0x20, 'PASSWD_NOTREQD', 'Password not required', 'No requiere contraseña', 'bad'],
-  [0x40, 'PASSWD_CANT_CHANGE', 'User cannot change password (ACE-based)', 'El usuario no puede cambiar la contraseña (por ACE)'],
-  [0x80, 'ENCRYPTED_TEXT_PWD_ALLOWED', 'Reversible password encryption', 'Contraseña con cifrado reversible', 'bad'],
-  [0x100, 'TEMP_DUPLICATE_ACCOUNT', 'Local account for users from another domain', 'Cuenta local para usuarios de otro dominio'],
-  [0x200, 'NORMAL_ACCOUNT', 'Normal user account', 'Cuenta de usuario normal'],
-  [0x800, 'INTERDOMAIN_TRUST_ACCOUNT', 'Trust account for a domain that trusts others', 'Cuenta de confianza entre dominios'],
-  [0x1000, 'WORKSTATION_TRUST_ACCOUNT', 'Computer account (workstation or member server)', 'Cuenta de equipo (estación o servidor miembro)'],
-  [0x2000, 'SERVER_TRUST_ACCOUNT', 'Domain controller computer account', 'Cuenta de equipo de un controlador de dominio'],
-  [0x10000, 'DONT_EXPIRE_PASSWORD', 'Password never expires', 'La contraseña nunca vence', 'warn'],
-  [0x20000, 'MNS_LOGON_ACCOUNT', 'MNS logon account', 'Cuenta de inicio de sesión MNS'],
-  [0x40000, 'SMARTCARD_REQUIRED', 'Smart card required for interactive logon', 'Requiere tarjeta inteligente para el inicio interactivo'],
-  [0x80000, 'TRUSTED_FOR_DELEGATION', 'Unconstrained Kerberos delegation', 'Delegación Kerberos sin restricciones', 'bad'],
-  [0x100000, 'NOT_DELEGATED', 'Sensitive, cannot be delegated', 'Sensible, no se puede delegar'],
-  [0x200000, 'USE_DES_KEY_ONLY', 'Kerberos DES only', 'Kerberos solo con DES', 'bad'],
-  [0x400000, 'DONT_REQ_PREAUTH', 'No Kerberos pre-authentication (AS-REP roastable)', 'Sin preautenticación Kerberos (vulnerable a AS-REP roasting)', 'bad'],
-  [0x800000, 'PASSWORD_EXPIRED', 'Password expired (not reliable here)', 'Contraseña vencida (no confiable acá)'],
-  [0x1000000, 'TRUSTED_TO_AUTH_FOR_DELEGATION', 'Constrained delegation with protocol transition', 'Delegación restringida con transición de protocolo', 'warn'],
-  [0x4000000, 'PARTIAL_SECRETS_ACCOUNT', 'Read-only domain controller (RODC)', 'Controlador de dominio de solo lectura (RODC)'],
-];
+const FLAGS = UAC_FLAGS;
 const KNOWN = FLAGS.reduce((acc, [bit]) => acc | bit, 0);
 
 const PRESETS = [

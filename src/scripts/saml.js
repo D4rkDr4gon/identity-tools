@@ -1,4 +1,5 @@
-import { initPage, esc, b64ToBytes, bytesToUtf8, fmtDate, fmtLocal, relative, onInput } from './common.js';
+import { initPage, esc, b64ToBytes, bytesToUtf8, bytesToB64, fmtDate, fmtLocal, relative, onInput, notesHtml, tabs } from './common.js';
+import { pretty, kids, kid, all, text, short } from './xml.js';
 import { tr } from './i18n.js';
 
 initPage({
@@ -14,6 +15,7 @@ initPage({
   'about.1': 'El binding HTTP-Redirect comprime el mensaje con DEFLATE crudo antes del base64 y el URL-encoding; el binding HTTP-POST solo lo pasa a base64. El decodificador detecta cuál recibió.',
   'about.2': 'Las firmas se informan (dónde están y qué algoritmos usan) pero no se validan criptográficamente: eso requiere canonicalización XML y el certificado del IdP, y le corresponde al SP.',
   'about.3': 'Un <code>EncryptedAssertion</code> solo se puede leer con la clave privada del SP, que nunca debería pegarse en una página web.',
+  'about.4': 'Para revisar la configuración de un IdP o un SP (endpoints, certificados y su vencimiento) usá el <a href="/identity-tools/saml-metadata/"><strong>inspector de metadata SAML</strong></a>.',
 });
 
 const NS = {
@@ -28,15 +30,9 @@ const resultEl = $('result');
 const encOut = $('encOut');
 
 let lastXml = '';
-let activeTab = 'summary';
+const renderTabs = tabs(resultEl);
 
 // ── Decoding pipeline ────────────────────────────────────
-
-function bytesToB64(bytes) {
-  let bin = '';
-  for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
-  return btoa(bin);
-}
 
 async function pipe(bytes, stream) {
   const out = new Blob([bytes]).stream().pipeThrough(stream);
@@ -104,12 +100,6 @@ async function decode(raw) {
 }
 
 // ── Reading the XML ──────────────────────────────────────
-
-const kids = (el, ns, name) => (el ? [...el.children].filter((c) => c.namespaceURI === ns && c.localName === name) : []);
-const kid = (el, ns, name) => kids(el, ns, name)[0];
-const all = (el, ns, name) => (el ? [...el.getElementsByTagNameNS(ns, name)] : []);
-const text = (el) => (el ? el.textContent.trim() : '');
-const short = (uri) => (uri ? String(uri).split(/[:#/]/).filter(Boolean).pop() : '');
 
 function when(iso) {
   const d = new Date(iso);
@@ -260,52 +250,12 @@ function analyse(doc, meta) {
   return { type, rows, notes, attributes, signatures };
 }
 
-// ── Pretty XML ───────────────────────────────────────────
-
-function pretty(node, depth = 0, html = true) {
-  const pad = '  '.repeat(depth);
-  const e = html ? esc : (s) => s;
-  const span = (cls, s) => (html ? `<span class="${cls}">${s}</span>` : s);
-
-  if (node.nodeType === Node.COMMENT_NODE) return `${pad}${span('x-cmt', e(`<!--${node.data}-->`))}`;
-  if (node.nodeType === Node.TEXT_NODE || node.nodeType === Node.CDATA_SECTION_NODE) {
-    const t = node.data.trim();
-    return t ? `${pad}${e(t)}` : '';
-  }
-  if (node.nodeType !== Node.ELEMENT_NODE) return '';
-
-  const attrs = [...node.attributes]
-    .map((a) => ` ${span('x-attr', e(a.name))}=${span('x-val', e(`"${a.value}"`))}`)
-    .join('');
-  const open = `${span('x-tag', e(`<${node.nodeName}`))}${attrs}`;
-  const close = span('x-tag', e(`</${node.nodeName}>`));
-  const children = [...node.childNodes].filter((c) => !(c.nodeType === Node.TEXT_NODE && !c.data.trim()));
-
-  if (!children.length) return `${pad}${open}${span('x-tag', e('/>'))}`;
-  if (children.length === 1 && children[0].nodeType === Node.TEXT_NODE) {
-    return `${pad}${open}${span('x-tag', e('>'))}${e(children[0].data.trim())}${close}`;
-  }
-  const inner = children.map((c) => pretty(c, depth + 1, html)).filter(Boolean).join('\n');
-  return `${pad}${open}${span('x-tag', e('>'))}\n${inner}\n${pad}${close}`;
-}
-
 // ── Rendering ────────────────────────────────────────────
-
-const ICON = { bad: 'fa-circle-xmark', warn: 'fa-triangle-exclamation', info: 'fa-circle-info', ok: 'fa-circle-check' };
 
 function kvTable(rows) {
   return `<table class="kv">${rows
     .map(([k, { v, sub }]) => `<tr><th>${esc(k)}</th><td>${esc(v)}${sub && sub !== v ? `<small>${esc(sub)}</small>` : ''}</td></tr>`)
     .join('')}</table>`;
-}
-
-function renderTabs(tabs) {
-  if (!tabs.some((t) => t.id === activeTab)) activeTab = tabs[0].id;
-  const head = tabs
-    .map((t) => `<button class="tab" role="tab" type="button" data-tab="${t.id}" aria-selected="${t.id === activeTab}">${esc(t.label)}</button>`)
-    .join('');
-  const body = tabs.map((t) => `<div class="tab-panel" role="tabpanel" data-panel="${t.id}"${t.id === activeTab ? '' : ' hidden'}>${t.html}</div>`).join('');
-  return `<div class="tabs" role="tablist">${head}</div>${body}`;
 }
 
 let seq = 0;
@@ -345,7 +295,7 @@ async function render() {
   ].join('');
 
   const summary =
-    `<ul class="notes">${r.notes.map((n) => `<li class="${n.level}"><i class="fas ${ICON[n.level]}"></i><span>${esc(n.text)}</span></li>`).join('')}</ul>` +
+    notesHtml(r.notes) +
     `<h3 class="sub">${tr('Fields', 'Campos')}</h3>${kvTable(r.rows)}`;
 
   const attrs = r.attributes.length
@@ -373,14 +323,6 @@ async function render() {
       { id: 'xml', label: 'XML', html: xml },
     ]);
 }
-
-resultEl.addEventListener('click', (e) => {
-  const tab = e.target.closest('.tab');
-  if (!tab) return;
-  activeTab = tab.dataset.tab;
-  resultEl.querySelectorAll('.tab').forEach((t) => t.setAttribute('aria-selected', String(t === tab)));
-  resultEl.querySelectorAll('.tab-panel').forEach((p) => (p.hidden = p.dataset.panel !== activeTab));
-});
 
 // ── Encoding (XML → binding) ─────────────────────────────
 

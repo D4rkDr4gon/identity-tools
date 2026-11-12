@@ -7,6 +7,8 @@ Browser-based utilities for identity and access management work, published at
 |------|------|--------------|
 | JWT decoder & verifier | `/jwt/` | Header, claims, validity window and warnings; signature check with an HMAC secret, PEM public key, certificate, JWK or JWKS (HS/RS/PS/ES/EdDSA via Web Crypto). Entra ID aware. |
 | SAML decoder | `/saml/` | SAMLRequest / SAMLResponse from the POST or Redirect binding (base64, deflate, URL-encoded, full URL). Summary, attributes, signature algorithms, pretty XML; encodes XML back for either binding. |
+| SAML metadata inspector | `/saml-metadata/` | IdP / SP metadata (or a federation aggregate): entityID, endpoints by binding, NameID formats, attributes, signing and encryption certificates with thumbprints and expiry, rollover and configuration warnings. |
+| LDAP filter validator | `/ldap/` | RFC 4515 parser with error position, indented and one-line output, plain-language explanation (bitwise / IN_CHAIN rules, AD flags, FILETIME, SID/GUID), templates, value escaping, PowerShell and ldapsearch commands. |
 | userAccountControl calculator | `/uac/` | Decode/build AD `userAccountControl`, flag the risky bits, generate the LDAP filter and PowerShell query. |
 | AD timestamp converter | `/filetime/` | FILETIME ⇄ Generalized Time ⇄ Unix ⇄ ISO, AD intervals (`maxPwdAge`…), stale-account LDAP filters. |
 

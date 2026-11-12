@@ -11,7 +11,7 @@ const BASE = '/identity-tools/';
 const SITE = `https://lcampassi.com${BASE}`;
 
 // One directory per tool; '' is the hub.
-const PAGES = ['', 'jwt', 'saml', 'uac', 'filetime'];
+const PAGES = ['', 'jwt', 'saml', 'saml-metadata', 'ldap', 'uac', 'filetime'];
 
 // ── Plugin: HTML partial includes (<!-- @include: path -->) ──
 function htmlInclude() {

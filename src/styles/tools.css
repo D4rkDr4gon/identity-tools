@@ -282,6 +282,22 @@ h3.sub {
 .big-value span { font-size: 0.85rem; color: var(--text-muted); }
 .presets { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.75rem; }
 
+/* ─── LDAP filter explanation ────────────────────────── */
+/* Code fonts must show what is typed: no "<=" → "≤" ligatures. */
+textarea, input, select, code, .code, .lx code { font-variant-ligatures: none; font-feature-settings: 'liga' 0, 'calt' 0; }
+textarea.short { min-height: 8rem; }
+.hint + .field, .flag.check { margin-top: 0.9rem; }
+.flag.check { background: transparent; }
+.lx ul { list-style: none; margin: 0.35rem 0 0.15rem 0.3rem; padding-left: 0.9rem; border-left: 2px solid var(--border); display: grid; gap: 0.4rem; }
+.lx-op { font-family: var(--font-mono); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--red); }
+.lx-leaf { font-size: 0.88rem; color: var(--text); line-height: 1.55; }
+.lx-leaf small { display: block; margin-top: 0.1rem; font-size: 0.76rem; color: var(--text-muted); word-break: break-word; }
+.lx-leaf small a { color: var(--red); }
+.lx code { font-family: var(--font-mono); font-size: 0.8rem; color: var(--heading); background: var(--surface-2); padding: 0.05rem 0.3rem; border-radius: 4px; word-break: break-all; }
+.lx em { color: var(--text-muted); font-style: normal; font-size: 0.8rem; }
+.error small { opacity: 0.8; }
+.error a { text-decoration: underline; word-break: break-all; }
+
 /* ─── About block ─────────────────────────────────────── */
 .about {
   margin-top: clamp(2rem, 4vw, 3rem);
